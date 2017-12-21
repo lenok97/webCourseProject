@@ -38,7 +38,7 @@ class Work(base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     subject_id = Column(Integer)
-    student_id = Column(Integer)
+    teacher_id = Column(Integer)
     point= Column(Integer)
     max_point= Column(Integer)
     def __repr__(self):
@@ -46,9 +46,9 @@ class Work(base):
 
 
 RecordBook = Table('record_book', base.metadata,
-    Column('student_id', Integer, ForeignKey('ctudent.id')),
+    Column('student_id', Integer, ForeignKey('student.id')),
     Column('teacher_id', Integer, ForeignKey('teacher.id')),
-    Column('subject_id', Integer, ForeignKey('subject.id')),
+    Column('work_id', Integer, ForeignKey('work.id')),
     Column('date', Date),
     Column('point', Integer)
 )
