@@ -1,71 +1,51 @@
-# -*- coding: utf-8 -*-
-from sqlalchemy import Table, Column, Integer, Unicode, ForeignKey, Index
+from sqlalchemy import create_engine, func, select
+from sqlalchemy import MetaData,Column
+from sqlalchemy import Integer, String, Numeric, ForeignKey, Date
+from sqlalchemy.orm import Session, relationship
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relation, mapper
+from sqlalchemy.orm import aliased
+from sqlalchemy.schema import Table
 
+import os
 
-BASE = declarative_base()
+metaData = MetaData()
+engine = create_engine("sqlite:///studentGen.db")
+base = declarative_base()
 
-
-class User(BASE):
-    __tablename__ = 'user_table'
-
+class Student(base):
+    __tablename__ = 'student'
     id = Column(Integer, primary_key=True)
-    name = Column(Unicode(50))
-
-    def login(self):
-        pass
-
+    name = Column(String(100), nullable=False)
     def __repr__(self):
-        pass
+        return "<Student(%r)>" % (self.name)
 
-
-class Admin(User):
-    __tablename__ = 'admin_table'
-    __mapper_args__ = {'polymorphic_identity': 'user_table'}
-
-    id = Column(Integer, ForeignKey('user_table.id'), primary_key=True)
-    phone = Column(Unicode(50))
-
-    def permissions(self):
-        pass
-
-    def __unicode__(self):
-        pass
-
-
-class Address(BASE):
-    __tablename__ = 'address_table'
-
+class Teacher(base):
+    __tablename__ = 'teacher'
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('user_table.id'))
-    user = relation(User, backref="address")
+    name = Column(String)
+    def __repr__(self):
+        return "<Teacher(%r)>" % (self.name)
 
+class Subject(base):
+    __tablename__ = 'subject'
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    def __repr__(self):
+        return "<Subject(%r)>" % (self.name)
 
-books = Table(
-    'books',
-    BASE.metadata,
-    Column('id', Integer, primary_key=True),
-    Column('title', Unicode(200), nullable=False),
-    Column('user_id', Integer, ForeignKey('user_table.id')),
-)
+class Work(base):
+    __tablename__ = 'work'
+    id = Column(Integer, primary_key=True)
+    subject_id = Column(Integer, ForeignKey('subject.id'))
+    teacher_id = Column(Integer, ForeignKey('teacher.id'))
+    name = Column(String)
+    max_point= Column(Integer)
+    def __repr__(self):
+        return "<Work(%r)>" % (self.name)
 
-
-Index("ix_user_title", books.c.user_id, books.c.title)
-
-
-class Book(object):
-    pass
-
-
-mapper(Book, books, {'user': relation(User, backref='books')})
-
-
-# Not mapped table
-notes = Table(
-    'notes',
-    BASE.metadata,
-    Column('id', Integer, primary_key=True),
-    Column('name', Unicode(200), nullable=False),
-    Column('user_id', Integer, ForeignKey('user_table.id')),
+RecordBook = Table('record_book', base.metadata,
+    Column('student_id', Integer, ForeignKey('student.id')),
+    Column('work_id', Integer, ForeignKey('work.id')),
+    Column('date', Date),
+    Column('point', Integer)
 )
