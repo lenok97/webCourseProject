@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="pyramid web application">
-    <meta name="author" content="Pylons Project">
+    <meta name="description" content="StudentsGen">
+    <meta name="author" content="FO-350001">
     <link rel="shortcut icon" href="{{request.static_url('studentsgen:static/pyramid-16x16.png')}}">
 
-    <title>Cookiecutter Alchemy project for the Pyramid Web Framework</title>
+    <title>Генерация успеваемости студентов</title>
 
     <!-- Bootstrap core CSS -->
     <link href="//oss.maxcdn.com/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
@@ -28,23 +28,9 @@
     <div class="starter-template">
       <div class="container">
         <div class="row">
-          <div class="col-md-2">
-            <img class="logo img-responsive" src="{{request.static_url('studentsgen:static/pyramid.png') }}" alt="pyramid web framework">
-          </div>
-          <div class="col-md-10">
-            {% block content %}
-                <p>No content</p>
-            {% endblock content %}
-          </div>
-        </div>
-        <div class="row">
-          <div class="links">
-            <ul>
-              <li><i class="glyphicon glyphicon-cog icon-muted"></i><a href="http://localhost:6543/admin">Admin</a></li>
-              <li><i class="glyphicon glyphicon-globe icon-muted"></i><a href="http://localhost:6543/student">Student</a></li>
-              <li><i class="glyphicon glyphicon-home icon-muted"></i><a href="http://localhost:6543/professor">Professor</a></li>
-            </ul>
-          </div>
+          {% block content %}
+            <p>No content</p>
+          {% endblock content %}
         </div>
       </div>
     </div>
