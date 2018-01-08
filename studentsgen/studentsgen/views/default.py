@@ -4,7 +4,7 @@ from pyramid.view import view_config
 import sqlalchemy as sa
 from sqlalchemy.exc import DBAPIError
 
-from ..models import Student
+from ..models import Student, Professor, Subject, Group, Course, Work, Rating
 
 
 @view_config(route_name='home', renderer='../templates/mainpage.jinja2')

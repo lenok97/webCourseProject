@@ -15,7 +15,7 @@ from ..models import (
     get_session_factory,
     get_tm_session,
     )
-from ..models import Student, Teacher, Subject, Work, Rating
+from ..models import Student, Professor, Subject, Group, Course, Work, Rating
 
 
 def usage(argv):
