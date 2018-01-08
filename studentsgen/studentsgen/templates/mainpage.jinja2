@@ -3,8 +3,8 @@
 {% block content %}
 <div class="content">
   <h1><span class="smaller">Students Performance Generation</span></h1>
-  <li><a class="smaller" href="http://localhost:6543/admin">Admin</span></li>
-  <li><a class="smaller" href="http://localhost:6543/professor">Professor</span></li>
-  <li><a class="smaller" href="http://localhost:6543/student">Students</span></li>
+  <li><a class="smaller" href="{{request.route_url('admin')}}">Admin</span></li>
+  <li><a class="smaller" href="{{request.route_url('professor')}}">Professors</span></li>
+  <li><a class="smaller" href="{{request.route_url('students')}}">Students</span></li>
 </div>
 {% endblock content %}

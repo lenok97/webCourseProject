@@ -1,0 +1,12 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+<div class="content">
+  <h1><span class="font-semi-bold">Students</span></h1>
+  {% for student in students %}
+  	<li>
+  	  <a href="{{request.route_url('students', student.name)}}"> {{student.name}} </a>
+  	</li>
+  {% endfor %}
+</div>
+{% endblock content %}

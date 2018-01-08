@@ -11,10 +11,15 @@ from ..models import Student
 def home_view(request):
     return {'one': 'one', 'project': 'StudentsGen'}
 
-@view_config(route_name='student', renderer='../templates/student.jinja2')
+@view_config(route_name='students', renderer='../templates/students.jinja2')
 def students_view(request):
 	query = request.dbsession.query(Student)
 	return { "students" : query.order_by(sa.desc(Student.name)) }
+
+@view_config(route_name='student', renderer='../templates/student.jinja2')
+def student_view(request):
+	student_name = request.matchdict['s']
+	return { "student_name" : student_name }
 
 @view_config(route_name='admin', renderer='../templates/admin.jinja2')
 def my_view2(request):
