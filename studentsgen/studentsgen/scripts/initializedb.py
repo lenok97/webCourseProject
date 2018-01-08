@@ -15,7 +15,7 @@ from ..models import (
     get_session_factory,
     get_tm_session,
     )
-from ..models import Student
+from ..models import Student, Teacher, Subject, Work, Rating
 
 
 def usage(argv):
@@ -41,5 +41,11 @@ def main(argv=sys.argv):
     with transaction.manager:
         dbsession = get_tm_session(session_factory, transaction.manager)
 
-        student = Student(name='Vovan')
-        dbsession.add(student)
+        student1 = Student(name='Vovan')
+        dbsession.add(student1)
+        student2 = Student(name='Petya')
+        dbsession.add(student2)
+        student3 = Student(name='Serega')
+        dbsession.add(student3)
+        student4 = Student(name='Kolyan')
+        dbsession.add(student4)

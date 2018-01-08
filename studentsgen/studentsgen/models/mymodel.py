@@ -42,9 +42,12 @@ class Work(Base):
     def __repr__(self):
         return "<Work(%r)>" % (self.name)
 
-RecordBook = Table('record_book', Base.metadata,
-    Column('student_id', Integer, ForeignKey('student.id')),
-    Column('work_id', Integer, ForeignKey('work.id')),
-    Column('date', Date),
-    Column('point', Integer)
-)
+class Rating(Base):
+    __tablename__ = 'record_book'
+    id = Column(Integer, primary_key=True)
+    student_id = Column(Integer, ForeignKey('subject.id'))
+    work_id = Column(Integer, ForeignKey('work.id'))
+    data = Column(Date)
+    point = Column(Integer)
+    def __repr_(self):
+        return "<Rating(%r, %r)>" % (self.data, point)

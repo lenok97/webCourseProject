@@ -1,21 +1,23 @@
 from pyramid.response import Response
 from pyramid.view import view_config
 
+import sqlalchemy as sa
 from sqlalchemy.exc import DBAPIError
 
 from ..models import Student
 
 
 @view_config(route_name='home', renderer='../templates/mainpage.jinja2')
-def my_view(request):
+def home_view(request):
     return {'one': 'one', 'project': 'StudentsGen'}
+
+@view_config(route_name='student', renderer='../templates/student.jinja2')
+def students_view(request):
+	query = request.dbsession.query(Student)
+	return { "students" : query.order_by(sa.desc(Student.name)) }
 
 @view_config(route_name='admin', renderer='../templates/admin.jinja2')
 def my_view2(request):
-    return {}
-
-@view_config(route_name='student', renderer='../templates/student.jinja2')
-def my_view3(request):
     return {}
 
 @view_config(route_name='professor', renderer='../templates/professor.jinja2')
