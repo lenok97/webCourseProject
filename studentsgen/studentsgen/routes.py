@@ -4,5 +4,6 @@ def includeme(config):
     config.add_route('admin', '/admin')
     config.add_route('students', '/student')
     config.add_route('student', '/student/{s}')
+    config.add_route('student_course', '/student/{s}/{c}')
     config.add_route('professors', '/professor')
     config.add_route('professor', '/professor/{p}')

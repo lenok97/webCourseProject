@@ -88,3 +88,17 @@ def main(argv=sys.argv):
         dbsession.add(course2)
         dbsession.add(course3)
         dbsession.add(course4)
+
+        dbsession.flush()
+        work1 = Work(course_id=course1.id, max_point=25, name='Control Work 1')
+        work2 = Work(course_id=course1.id, max_point=30, name='Control Work 2')
+
+        dbsession.add(work1)
+        dbsession.add(work2)
+
+        dbsession.flush()
+        rating1 = Rating(student_id=student1.id, work_id=work1.id, point=25)
+        rating2 = Rating(student_id=student1.id, work_id=work2.id, point=25)
+
+        dbsession.add(rating1)
+        dbsession.add(rating2)

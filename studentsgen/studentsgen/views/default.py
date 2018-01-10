@@ -14,7 +14,7 @@ def home_view(request):
 @view_config(route_name='students', renderer='../templates/students.jinja2')
 def students_view(request):
     query = request.dbsession.query(Student)
-    return { "students" : query.order_by(sa.desc(Student.name)) }
+    return { 'students' : query.order_by(sa.desc(Student.name)) }
 
 @view_config(route_name='student', renderer='../templates/student.jinja2')
 def student_view(request):
@@ -33,12 +33,42 @@ def student_view(request):
     for course in query.filter(Course.group_id == group.id):
         courses.append(sub_query.get(course.subject_id))
 
-    return { "student" : student, "group" : group, "courses" : courses }
+    return { 'student' : student, 'group' : group, 'courses' : courses }
+
+@view_config(route_name='student_course', renderer='../templates/student_course.jinja2')
+def student_course_view(request):
+    student_id = request.matchdict['s']
+    course_id = request.matchdict['c']
+
+    query = request.dbsession.query(Student)
+    student = query.get(student_id)
+
+    query = request.dbsession.query(Course)
+    course = query.get(course_id)
+
+    query = request.dbsession.query(Subject)
+    subject = query.get(course.subject_id)
+
+    query = request.dbsession.query(Professor)
+    professor = query.get(course.professor_id)
+
+    query = request.dbsession.query(Rating)
+    work_query = request.dbsession.query(Work)
+
+    ratings = []
+    works = []
+    for rating in query.filter(Rating.student_id == student.id):
+        ratings.append(rating)
+        works.append(work_query.get(rating.work_id))
+
+    data = zip(ratings, works)
+
+    return { 'subject' : subject, 'professor' : professor, 'data' : data }
 
 @view_config(route_name='professors', renderer='../templates/professors.jinja2')
 def professors_view(request):
     query = request.dbsession.query(Professor)
-    return { "professors" : query.order_by(sa.desc(Professor.name)) }
+    return { 'professors' : query.order_by(sa.desc(Professor.name)) }
 
 @view_config(route_name='professor', renderer='../templates/professor.jinja2')
 def professor_view(request):
@@ -47,7 +77,7 @@ def professor_view(request):
     query = request.dbsession.query(Professor)
     professor = query.get(professor_id)
 
-    return { "professor" : professor }
+    return { 'professor' : professor }
 
 @view_config(route_name='admin', renderer='../templates/admin.jinja2')
 def my_view2(request):

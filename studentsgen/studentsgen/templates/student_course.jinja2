@@ -1,0 +1,22 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+<div class="content">
+  <h1><span class="font-semi-bold"> {{subject.name}} </span></h1>
+  <h2><span class="font-semi-bold"> {{professor.name}} </span></h2>
+
+  {% for rating, work in data %}
+  	<div class="row">
+  	  <div class="col col-lg-4 col-md-4 col-sm-4 col-4">
+  		{{work.name}}
+  	  </div>
+  	  <div class="col col-lg-4 col-md-4 col-sm-4 col-4">
+  	    {{rating.point}} out of {{work.max_point}}
+  	  </div>
+  	  <div class="col col-lg-4 col-md-4 col-sm-4 col-4">
+  	  	{{rating.date}}
+  	  </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock content %}

@@ -1,10 +1,12 @@
+import datetime
+
 from sqlalchemy import (
     Column,
     Index,
     Integer,
     Text,
     String,
-    Date,
+    DateTime,
     ForeignKey
 )
 from sqlalchemy.schema import Table
@@ -63,7 +65,7 @@ class Rating(Base):
     id = Column(Integer, primary_key=True)
     student_id = Column(Integer, ForeignKey('student.id'))
     work_id = Column(Integer, ForeignKey('work.id'))
-    data = Column(Date)
+    date = Column(DateTime, default=datetime.datetime.utcnow)
     point = Column(Integer)
     def __repr_(self):
         return "<Rating(%r, %r)>" % (self.data, point)
