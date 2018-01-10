@@ -41,11 +41,50 @@ def main(argv=sys.argv):
     with transaction.manager:
         dbsession = get_tm_session(session_factory, transaction.manager)
 
-        student1 = Student(name='Vovan')
+        group1 = Group(name='Group 1')
+        group2 = Group(name='Group 2')
+
+        dbsession.add(group1)
+        dbsession.add(group2)
+
+        student1 = Student(name='Vovan', group_id=group1.id)
+        student2 = Student(name='Petya', group_id=group1.id)
+        student3 = Student(name='Serega', group_id=group2.id)
+        student4 = Student(name='Kolyan', group_id=group2.id)
+
         dbsession.add(student1)
-        student2 = Student(name='Petya')
         dbsession.add(student2)
-        student3 = Student(name='Serega')
         dbsession.add(student3)
-        student4 = Student(name='Kolyan')
         dbsession.add(student4)
+
+        prof1 = Professor(name='Mr White')
+        prof2 = Professor(name='Mr Black')
+        prof3 = Professor(name='Mr Brown')
+        prof4 = Professor(name='Mr Pink')
+
+        dbsession.add(prof1)
+        dbsession.add(prof2)
+        dbsession.add(prof3)
+        dbsession.add(prof4)
+
+        sub1 = Subject(name='Math')
+        sub2 = Subject(name='Physics')
+        sub3 = Subject(name='Programming')
+        sub4 = Subject(name='History')
+
+        dbsession.add(sub1)
+        dbsession.add(sub2)
+        dbsession.add(sub3)
+        dbsession.add(sub4)
+
+        course1 = Course(group_id=group1.id, professor_id=prof1.id, subject_id=sub1.id)
+        course2 = Course(group_id=group1.id, professor_id=prof2.id, subject_id=sub2.id)
+        course3 = Course(group_id=group2.id, professor_id=prof3.id, subject_id=sub3.id)
+        course4 = Course(group_id=group2.id, professor_id=prof4.id, subject_id=sub4.id)
+
+        dbsession.add(course1)
+        dbsession.add(course2)
+        dbsession.add(course3)
+        dbsession.add(course4)
+
+        
