@@ -21,13 +21,20 @@ def student_view(request):
 	student_name = request.matchdict['s']
 	return { "student_name" : student_name }
 
+@view_config(route_name='professors', renderer='../templates/professors.jinja2')
+def professors_view(request):
+    query = request.dbsession.query(Professor)
+    return { "professors" : query.order_by(sa.desc(Professor.name)) }
+
+@view_config(route_name='professor', renderer='../templates/professor.jinja2')
+def professor_view(request):
+    professor_name = request.matchdict['p']
+    return { "professor_name" : professor_name }
+
 @view_config(route_name='admin', renderer='../templates/admin.jinja2')
 def my_view2(request):
     return {}
 
-@view_config(route_name='professor', renderer='../templates/professor.jinja2')
-def my_view4(request):
-    return {}
 
 
 db_err_msg = """\

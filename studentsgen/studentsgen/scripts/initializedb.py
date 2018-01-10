@@ -86,5 +86,3 @@ def main(argv=sys.argv):
         dbsession.add(course2)
         dbsession.add(course3)
         dbsession.add(course4)
-
-        
