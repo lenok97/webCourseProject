@@ -13,13 +13,27 @@ def home_view(request):
 
 @view_config(route_name='students', renderer='../templates/students.jinja2')
 def students_view(request):
-	query = request.dbsession.query(Student)
-	return { "students" : query.order_by(sa.desc(Student.name)) }
+    query = request.dbsession.query(Student)
+    return { "students" : query.order_by(sa.desc(Student.name)) }
 
 @view_config(route_name='student', renderer='../templates/student.jinja2')
 def student_view(request):
-	student_name = request.matchdict['s']
-	return { "student_name" : student_name }
+    student_id = request.matchdict['s']
+    
+    query = request.dbsession.query(Student)
+    student = query.get(student_id)
+
+    query = request.dbsession.query(Group)
+    group = query.get(student.group_id)
+
+    query = request.dbsession.query(Course)
+    sub_query = request.dbsession.query(Subject)
+
+    courses = []
+    for course in query.filter(Course.group_id == group.id):
+        courses.append(sub_query.get(course.subject_id))
+
+    return { "student" : student, "group" : group, "courses" : courses }
 
 @view_config(route_name='professors', renderer='../templates/professors.jinja2')
 def professors_view(request):
@@ -28,8 +42,12 @@ def professors_view(request):
 
 @view_config(route_name='professor', renderer='../templates/professor.jinja2')
 def professor_view(request):
-    professor_name = request.matchdict['p']
-    return { "professor_name" : professor_name }
+    professor_id = request.matchdict['p']
+
+    query = request.dbsession.query(Professor)
+    professor = query.get(professor_id)
+
+    return { "professor" : professor }
 
 @view_config(route_name='admin', renderer='../templates/admin.jinja2')
 def my_view2(request):

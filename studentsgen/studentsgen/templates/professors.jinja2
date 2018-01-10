@@ -3,9 +3,9 @@
 {% block content %}
 <div class="content">
   <h1><span class="font-semi-bold">Professors</span></h1>
-  {% for prof in professors %}
+  {% for professor in professors %}
   	<li>
-  	  <a href="{{request.route_url('professors', prof.name)}}"> {{prof.name}} </a>
+  	  <a href="{{request.route_url('professors', professor.id)}}"> {{professor.name}} </a>
   	</li>
   {% endfor %}
 </div>

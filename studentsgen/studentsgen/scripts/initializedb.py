@@ -47,6 +47,7 @@ def main(argv=sys.argv):
         dbsession.add(group1)
         dbsession.add(group2)
 
+        dbsession.flush()
         student1 = Student(name='Vovan', group_id=group1.id)
         student2 = Student(name='Petya', group_id=group1.id)
         student3 = Student(name='Serega', group_id=group2.id)
@@ -77,6 +78,7 @@ def main(argv=sys.argv):
         dbsession.add(sub3)
         dbsession.add(sub4)
 
+        dbsession.flush()
         course1 = Course(group_id=group1.id, professor_id=prof1.id, subject_id=sub1.id)
         course2 = Course(group_id=group1.id, professor_id=prof2.id, subject_id=sub2.id)
         course3 = Course(group_id=group2.id, professor_id=prof3.id, subject_id=sub3.id)
