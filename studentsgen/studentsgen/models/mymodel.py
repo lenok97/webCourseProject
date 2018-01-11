@@ -1,5 +1,4 @@
 import datetime
-
 from sqlalchemy import (
     Column,
     Index,
@@ -7,11 +6,13 @@ from sqlalchemy import (
     Text,
     String,
     DateTime,
-    ForeignKey
+    ForeignKey,
+    Unicode
 )
 from sqlalchemy.schema import Table
-
 from .meta import Base
+from passlib.apps import custom_app_context as pwd_context
+
 
 class Student(Base):
     __tablename__ = 'student'
@@ -60,6 +61,10 @@ class Work(Base):
     def __repr__(self):
         return "<Work(%r)>" % (self.name)
 
+    def set_maxpoint(self, point):
+        self.max_point = point
+
+
 class Rating(Base):
     __tablename__ = 'record_book'
     id = Column(Integer, primary_key=True)
@@ -69,3 +74,27 @@ class Rating(Base):
     point = Column(Integer)
     def __repr_(self):
         return "<Rating(%r, %r)>" % (self.data, point)
+
+    def set_point(self, point):
+        self.point = point
+
+    def set_student(self, id):
+        self.student_id = id
+
+class User(Base):
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True)
+    name = Column(Unicode(255), unique=True, nullable=False)
+    password = Column(Unicode(255), nullable=False)
+    last_logged = Column(DateTime, default=datetime.datetime.utcnow)
+
+    def verify_password(self, password):
+        # is it cleartext?
+        if password == self.password:
+            self.set_password(password)
+
+        return "<User(%r, %r)>" %(password, self.password)
+
+    def set_password(self, password):
+        password_hash = pwd_context.encrypt(password)
+        self.password = password_hash

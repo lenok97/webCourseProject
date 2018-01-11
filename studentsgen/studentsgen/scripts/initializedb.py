@@ -24,7 +24,6 @@ def usage(argv):
           '(example: "%s development.ini")' % (cmd, cmd))
     sys.exit(1)
 
-
 def main(argv=sys.argv):
     if len(argv) < 2:
         usage(argv)
@@ -48,16 +47,22 @@ def main(argv=sys.argv):
         dbsession.add(group2)
 
         dbsession.flush()
-        student1 = Student(name='Vovan', group_id=group1.id)
-        student2 = Student(name='Petya', group_id=group1.id)
-        student3 = Student(name='Serega', group_id=group2.id)
-        student4 = Student(name='Kolyan', group_id=group2.id)
+        student=[]
+        student.append(Student(name='Vovan', group_id=group1.id))
+        student.append(Student(name='Petya', group_id=group1.id))
+        student.append(Student(name='Serega', group_id=group1.id))
+        student.append(Student(name='Kolyan', group_id=group1.id))
+        student.append(Student(name='Harry', group_id=group1.id))
+        student.append(Student(name='Petya', group_id=group2.id))
+        student.append(Student(name='Serega', group_id=group2.id))
+        student.append(Student(name='Kolyan', group_id=group2.id))
+        student.append(Student(name='Harry', group_id=group2.id))
+        student.append(Student(name='Vasiliy', group_id=group2.id))
 
-        dbsession.add(student1)
-        dbsession.add(student2)
-        dbsession.add(student3)
-        dbsession.add(student4)
+        for s in student:
+            dbsession.add(s)
 
+        dbsession.flush()
         prof1 = Professor(name='Mr White')
         prof2 = Professor(name='Mr Black')
         prof3 = Professor(name='Mr Brown')
@@ -79,26 +84,50 @@ def main(argv=sys.argv):
         dbsession.add(sub4)
 
         dbsession.flush()
-        course1 = Course(group_id=group1.id, professor_id=prof1.id, subject_id=sub1.id)
-        course2 = Course(group_id=group1.id, professor_id=prof2.id, subject_id=sub2.id)
-        course3 = Course(group_id=group2.id, professor_id=prof3.id, subject_id=sub3.id)
-        course4 = Course(group_id=group2.id, professor_id=prof4.id, subject_id=sub4.id)
+        course=[]
+        course.append(Course(group_id=group1.id, professor_id=prof1.id, subject_id=sub1.id))
+        course.append(Course(group_id=group1.id, professor_id=prof2.id, subject_id=sub2.id))
+        course.append(Course(group_id=group1.id, professor_id=prof3.id, subject_id=sub3.id))
+        course.append(Course(group_id=group1.id, professor_id=prof4.id, subject_id=sub4.id))
+        course.append(Course(group_id=group1.id, professor_id=prof1.id, subject_id=sub1.id))
+        course.append(Course(group_id=group2.id, professor_id=prof2.id, subject_id=sub2.id))
+        course.append(Course(group_id=group2.id, professor_id=prof3.id, subject_id=sub3.id))
+        course.append(Course(group_id=group2.id, professor_id=prof4.id, subject_id=sub4.id))
+        course.append(Course(group_id=group2.id, professor_id=prof1.id, subject_id=sub1.id))
+        course.append(Course(group_id=group2.id, professor_id=prof4.id, subject_id=sub4.id))
 
-        dbsession.add(course1)
-        dbsession.add(course2)
-        dbsession.add(course3)
-        dbsession.add(course4)
-
-        dbsession.flush()
-        work1 = Work(course_id=course1.id, max_point=25, name='Control Work 1')
-        work2 = Work(course_id=course1.id, max_point=30, name='Control Work 2')
-
-        dbsession.add(work1)
-        dbsession.add(work2)
+        for c in course:
+            dbsession.add(c)
 
         dbsession.flush()
-        rating1 = Rating(student_id=student1.id, work_id=work1.id, point=25)
-        rating2 = Rating(student_id=student1.id, work_id=work2.id, point=25)
+        work=[]
+        work.append(Work(course_id=course[0].id, max_point=25, name='Control Work 1'))
+        work.append(Work(course_id=course[0].id, max_point=30, name='Control Work 2'))
+        work.append(Work(course_id=course[1].id, max_point=30, name='Control Work 3'))
+        work.append(Work(course_id=course[1].id, max_point=30, name='Control Work 4'))
+        work.append(Work(course_id=course[2].id, max_point=30, name='Control Work 5'))
+        work.append(Work(course_id=course[3].id, max_point=25, name='Control Work 6'))
+        work.append(Work(course_id=course[4].id, max_point=30, name='Control Work 7'))
+        work.append(Work(course_id=course[5].id, max_point=30, name='Control Work 8'))
+        work.append(Work(course_id=course[6].id, max_point=30, name='Control Work 9'))
+        work.append(Work(course_id=course[7].id, max_point=30, name='Control Work 10'))
+        work.append(Work(course_id=course[8].id, max_point=25, name='Control Work 11'))
+        work.append(Work(course_id=course[8].id, max_point=30, name='Control Work 12'))
+        work.append(Work(course_id=course[9].id, max_point=30, name='Control Work 13'))
+        work.append(Work(course_id=course[9].id, max_point=30, name='Control Work 14'))
+        work.append(Work(course_id=course[9].id, max_point=30, name='Control Work 15'))
 
-        dbsession.add(rating1)
-        dbsession.add(rating2)
+        for w in work:
+            dbsession.add(w)
+
+        dbsession.flush()
+        rating=[]
+        rating.append(Rating(student_id=student[0].id, work_id=work[0].id, point=15))
+        rating.append(Rating(student_id=student[0].id, work_id=work[1].id, point=25))
+        rating.append(Rating(student_id=student[1].id, work_id=work[2].id, point=24))
+        rating.append(Rating(student_id=student[2].id, work_id=work[3].id, point=15))
+        rating.append(Rating(student_id=student[3].id, work_id=work[4].id, point=25))
+        rating.append(Rating(student_id=student[4].id, work_id=work[5].id, point=20))
+        rating.append(Rating(student_id=student[4].id, work_id=work[6].id, point=25))
+        for r in rating:
+            dbsession.add(r)
