@@ -1,0 +1,43 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+    <h1>Update Rating</h1>
+
+    <form action="{{request.route_url('updatereiting')}}" method="post" class="form">
+
+        {% for error in form.work.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+
+        <div class="form-group">
+            <label for="title">{{form.work.label}}</label>
+            {{form.work(class_='form-control')}}
+        </div>
+
+		{% for error in form.student_id.errors %}
+            <div class="error">{{error}}</div>
+        {% endfor %}
+
+        <div class="form-group">
+            <label for="body">{{form.student_id.label}}</label>
+            {{form.student_id(class_='form-control')}}
+        </div>
+		
+		
+        {% for error in form.point.errors %}
+            <div class="error">{{error}}</div>
+        {% endfor %}
+
+        <div class="form-group">
+            <label for="body">{{form.point.label}}</label>
+            {{form.point(class_='form-control')}}
+        </div>
+        <div class="form-group">
+            <label></label>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+
+
+    </form>
+    <p><a href="{{request.route_url('home')}}">Go Back</a></p>
+{% endblock %}

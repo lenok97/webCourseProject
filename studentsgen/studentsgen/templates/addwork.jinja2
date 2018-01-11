@@ -1,0 +1,43 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+    <h1>Add work</h1>
+
+    <form action="{{request.route_url('addwork')}}" method="post" class="form">
+
+        {% for error in form.course.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+
+        <div class="form-group">
+            <label for="title">{{form.course.label}}</label>
+            {{form.course(class_='form-control')}}
+        </div>
+
+        {% for error in form.title.errors %}
+            <div class="error">{{error}}</div>
+        {% endfor %}
+
+        <div class="form-group">
+            <label for="body">{{form.title.label}}</label>
+            {{form.title(class_='form-control')}}
+        </div>
+		
+		        {% for error in form.max_point.errors %}
+            <div class="error">{{error}}</div>
+        {% endfor %}
+
+        <div class="form-group">
+            <label for="body">{{form.max_point.label}}</label>
+            {{form.max_point(class_='form-control')}}
+        </div>
+		
+        <div class="form-group">
+            <label></label>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+
+
+    </form>
+    <p><a href="{{request.route_url('home')}}">Go Back</a></p>
+{% endblock %}
