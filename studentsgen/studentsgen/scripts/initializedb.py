@@ -53,10 +53,6 @@ def main(argv=sys.argv):
         student.append(Student(name='Serega', group_id=group1.id))
         student.append(Student(name='Kolyan', group_id=group1.id))
         student.append(Student(name='Harry', group_id=group1.id))
-        student.append(Student(name='Petya', group_id=group2.id))
-        student.append(Student(name='Serega', group_id=group2.id))
-        student.append(Student(name='Kolyan', group_id=group2.id))
-        student.append(Student(name='Harry', group_id=group2.id))
         student.append(Student(name='Vasiliy', group_id=group2.id))
 
         for s in student:

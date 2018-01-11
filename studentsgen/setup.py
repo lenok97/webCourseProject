@@ -19,7 +19,8 @@ requires = [
     'transaction',
     'zope.sqlalchemy',
     'waitress',
-    'passlib'
+    'passlib',
+    'wtforms==2.1'
 ]
 
 tests_require = [
