@@ -19,4 +19,16 @@ def professor_view(request):
     query = request.dbsession.query(Professor)
     professor = query.get(professor_id)
 
-    return { 'professor' : professor }
+    query = request.dbsession.query(Course)
+    sub_query = request.dbsession.query(Subject)
+    group_query = request.dbsession.query(Group)
+
+    courses = []
+    groups = []
+    for course in query.filter(Course.professor_id == professor.id):
+        courses.append(sub_query.get(course.subject_id))
+        groups.append(group_query.get(course.group_id))
+
+    data = zip(courses, groups)
+
+    return { 'professor' : professor, 'data' : data }

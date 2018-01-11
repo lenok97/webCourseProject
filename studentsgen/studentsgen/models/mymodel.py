@@ -64,7 +64,6 @@ class Work(Base):
     def set_maxpoint(self, point):
         self.max_point = point
 
-
 class Rating(Base):
     __tablename__ = 'record_book'
     id = Column(Integer, primary_key=True)
