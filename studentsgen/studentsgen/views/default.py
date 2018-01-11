@@ -58,9 +58,12 @@ def student_course_view(request):
 
     ratings = []
     works = []
-    for rating in query.filter(Rating.student_id == student.id):
-        ratings.append(rating)
-        works.append(work_query.get(rating.work_id))
+    for rating in query.filter(Rating.student_id == student.id ):
+        work = work_query.get(rating.work_id)
+
+        if work.course_id == course.id:
+            ratings.append(rating)
+            works.append(work_query.get(rating.work_id))
 
     data = zip(ratings, works)
 

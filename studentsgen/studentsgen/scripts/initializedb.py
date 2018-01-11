@@ -85,12 +85,10 @@ def main(argv=sys.argv):
         course.append(Course(group_id=group1.id, professor_id=prof2.id, subject_id=sub2.id))
         course.append(Course(group_id=group1.id, professor_id=prof3.id, subject_id=sub3.id))
         course.append(Course(group_id=group1.id, professor_id=prof4.id, subject_id=sub4.id))
-        course.append(Course(group_id=group1.id, professor_id=prof1.id, subject_id=sub1.id))
         course.append(Course(group_id=group2.id, professor_id=prof2.id, subject_id=sub2.id))
         course.append(Course(group_id=group2.id, professor_id=prof3.id, subject_id=sub3.id))
         course.append(Course(group_id=group2.id, professor_id=prof4.id, subject_id=sub4.id))
         course.append(Course(group_id=group2.id, professor_id=prof1.id, subject_id=sub1.id))
-        course.append(Course(group_id=group2.id, professor_id=prof4.id, subject_id=sub4.id))
 
         for c in course:
             dbsession.add(c)
@@ -107,11 +105,6 @@ def main(argv=sys.argv):
         work.append(Work(course_id=course[5].id, max_point=30, name='Control Work 8'))
         work.append(Work(course_id=course[6].id, max_point=30, name='Control Work 9'))
         work.append(Work(course_id=course[7].id, max_point=30, name='Control Work 10'))
-        work.append(Work(course_id=course[8].id, max_point=25, name='Control Work 11'))
-        work.append(Work(course_id=course[8].id, max_point=30, name='Control Work 12'))
-        work.append(Work(course_id=course[9].id, max_point=30, name='Control Work 13'))
-        work.append(Work(course_id=course[9].id, max_point=30, name='Control Work 14'))
-        work.append(Work(course_id=course[9].id, max_point=30, name='Control Work 15'))
 
         for w in work:
             dbsession.add(w)
