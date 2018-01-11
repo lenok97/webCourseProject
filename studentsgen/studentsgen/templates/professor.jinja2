@@ -7,7 +7,7 @@
   {% for course, group in data %}
   	<div class="row">
   	  <div class="col col-lg-6 col-md-6 col-sm-6 col-6">
-  		<a href="{{request.route_url('professors', professor.id, course.id)}}"> {{course.name}} </a>
+  		<a href="{{request.route_url('professor_course', p=professor.id, c=course.id)}}"> {{course.name}} </a>
   	  </div>
   	  <div class="col col-lg-6 col-md-6 col-sm-6 col-6">
   	    <h2><span class="font-semi-bold"> {{group.name}} </span></h2>

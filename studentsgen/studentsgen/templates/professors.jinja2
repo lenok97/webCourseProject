@@ -5,7 +5,7 @@
   <h1><span class="font-semi-bold">Professors</span></h1>
   {% for professor in professors %}
   	<li>
-  	  <a href="{{request.route_url('professors', professor.id)}}"> {{professor.name}} </a>
+  	  <a href="{{request.route_url('professor', p=professor.id)}}"> {{professor.name}} </a>
   	</li>
   {% endfor %}
 </div>

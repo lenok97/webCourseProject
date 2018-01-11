@@ -9,5 +9,6 @@ def includeme(config):
     config.add_route('student_course', '/student/{s}/{c}')
     config.add_route('professors', '/professor')
     config.add_route('professor', '/professor/{p}')
-    config.add_route('updatereiting', '/updatereiting')
+    config.add_route('professor_course', '/professor/{p}/{c}')
+    config.add_route('update_rating', '/professor/{p}/{c}/{w}')
     config.add_route('addwork', '/addwork')

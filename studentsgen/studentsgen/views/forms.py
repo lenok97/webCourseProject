@@ -17,8 +17,12 @@ def register(request):
         return HTTPFound(location=request.route_url('home'))
     return {'form': form}
 
-@view_config(route_name='updatereiting', renderer='../templates/updatereiting.jinja2', permission='create')
-def updatereiting(request):
+@view_config(route_name='update_rating', renderer='../templates/update_rating.jinja2', permission='create')
+def update_rating(request):
+    professor_id = request.matchdict['p']
+    course_id = request.matchdict['c']
+    work_id = request.matchdict['w']
+
     form = UpdateRatingForm(request.POST)
     if request.method == 'POST' and form.validate():
         reiting = Rating(work_id=form.work.data)
@@ -26,7 +30,7 @@ def updatereiting(request):
         reiting.set_point(form.point.data) 
         request.dbsession.add(reiting)
         return HTTPFound(location=request.route_url('home'))
-    return {'form': form}
+    return {'form': form, 'professor' : professor_id, 'course' : course_id, 'work' : work_id }
 
 @view_config(route_name='addwork', renderer='../templates/addwork.jinja2', permission='create')
 def add_work(request):

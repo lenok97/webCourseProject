@@ -32,3 +32,29 @@ def professor_view(request):
     data = zip(courses, groups)
 
     return { 'professor' : professor, 'data' : data }
+
+@view_config(route_name='professor_course', renderer='../templates/professor_course.jinja2')
+def student_course_view(request):
+    professor_id = request.matchdict['p']
+    course_id = request.matchdict['c']
+
+    query = request.dbsession.query(Professor)
+    professor = query.get(professor_id)
+
+    query = request.dbsession.query(Course)
+    course = query.get(course_id)
+
+    query = request.dbsession.query(Subject)
+    subject = query.get(course.subject_id)
+
+    query = request.dbsession.query(Group)
+    group = query.get(course.group_id)
+
+    query = request.dbsession.query(Work)
+    work_query = request.dbsession.query(Work)
+
+    works = []
+    for work in query.filter(Work.course_id == course.id ):
+        works.append(work)
+
+    return { 'professor' : professor, 'course' : course, 'subject' : subject, 'group' : group, 'works' : works }

@@ -7,7 +7,7 @@
 
   {% for course in courses %}
   	<li>
-  	  <a href="{{request.route_url('students', student.id, course.id)}}"> {{course.name}} </a>
+  	  <a href="{{request.route_url('student_course', s=student.id, c=course.id)}}"> {{course.name}} </a>
   	</li>
   {% endfor %}
 </div>
