@@ -11,7 +11,9 @@ from ..forms import (
     AddWorkForm,
     UpdateGroupRatingForm,
     UpdateStudentRatingForm,
-    AddNamedForm
+    AddNamedForm,
+    AddStudentForm,
+    AddCourseForm
 )
 
 @view_config(route_name='register', renderer='../templates/register.jinja2')
@@ -120,5 +122,46 @@ def add_subject(request):
     if request.method == 'POST' and form.validate():
         subject = Subject(name=form.name.data)
         request.dbsession.add(subject)
+        return HTTPFound(location=request.route_url('admin'))
+    return { 'form' : form }
+
+@view_config(route_name='add_student', renderer='../templates/add_student.jinja2', permission='create')
+def add_student(request):
+    form = AddStudentForm(request.POST)
+
+    query = request.dbsession.query(Group)
+
+    form.groups.choices = []
+    for group in query:
+        form.groups.choices.append((group.id, group.name))
+
+    if request.method == 'POST' and form.validate():
+        student = Student(name=form.name.data, group_id=request.params['groups'])
+        request.dbsession.add(student)
+        return HTTPFound(location=request.route_url('admin'))
+    return { 'form' : form }
+
+@view_config(route_name='add_course', renderer='../templates/add_course.jinja2', permission='create')
+def add_course(request):
+    form = AddCourseForm(request.POST)
+
+    query = request.dbsession.query(Group)
+    form.groups.choices = []
+    for group in query:
+        form.groups.choices.append((group.id, group.name))
+
+    query = request.dbsession.query(Professor)
+    form.professors.choices = []
+    for professor in query:
+        form.professors.choices.append((professor.id, professor.name))
+
+    query = request.dbsession.query(Subject)
+    form.subjects.choices = []
+    for subject in query:
+        form.subjects.choices.append((subject.id, subject.name))
+
+    if request.method == 'POST' and form.validate():
+        course = Course(group_id=request.params['groups'], professor_id=request.params['professors'], subject_id=request.params['subjects'])
+        request.dbsession.add(course)
         return HTTPFound(location=request.route_url('admin'))
     return { 'form' : form }

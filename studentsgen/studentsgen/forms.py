@@ -1,4 +1,4 @@
-from wtforms import Form, StringField, TextAreaField, FieldList, FormField, validators
+from wtforms import Form, StringField, TextAreaField, FieldList, FormField, SelectField, validators
 from wtforms import IntegerField, PasswordField
 from wtforms.widgets import HiddenInput
 
@@ -22,3 +22,12 @@ class UpdateGroupRatingForm(Form):
 
 class AddNamedForm(Form):
     name = StringField('Name', [validators.Length(min=1, max=255)], filters=[strip_filter])
+
+class AddStudentForm(Form):
+    name = StringField('Name', [validators.Length(min=1, max=255)], filters=[strip_filter])
+    groups = SelectField('Group', coerce=int)
+
+class AddCourseForm(Form):
+    groups = SelectField('Group', coerce=int)
+    professors = SelectField('Professors', coerce=int)
+    subjects = SelectField('Subjects', coerce=int)

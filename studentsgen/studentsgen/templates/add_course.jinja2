@@ -1,0 +1,39 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+    <h1>Add Course</h1>
+
+    <form action="{{request.route_url('add_course')}}" method="post" class="form">
+        {% for error in form.groups.errors %}
+            <div class="error">{{error}}</div>
+        {% endfor %}
+
+        <div class="form-group">
+            <label for="body">{{form.groups.label}}</label>
+            {{form.groups(class_='form-control')}}
+        </div>
+		
+        {% for error in form.professors.errors %}
+            <div class="error">{{error}}</div>
+        {% endfor %}
+
+        <div class="form-group">
+            <label for="body">{{form.professors.label}}</label>
+            {{form.professors(class_='form-control')}}
+        </div>
+
+        {% for error in form.subjects.errors %}
+            <div class="error">{{error}}</div>
+        {% endfor %}
+
+        <div class="form-group">
+            <label for="body">{{form.subjects.label}}</label>
+            {{form.subjects(class_='form-control')}}
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+    </form>
+    <p><a href="{{request.route_url('admin')}}">Go Back</a></p>
+{% endblock content %}
