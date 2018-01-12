@@ -18,6 +18,21 @@ def register(request):
         return HTTPFound(location=request.route_url('home'))
     return {'form': form}
 
+@view_config(route_name='auth', match_param='action=in', renderer='string',
+             request_method='POST')
+@view_config(route_name='auth', match_param='action=out', renderer='string')
+def sign_in_out(request):
+    username = request.POST.get('username')
+    if username:
+        user = UserService.by_name(username, request=request)
+        if user and user.verify_password(request.POST.get('password')):
+            headers = remember(request, user.name)
+        else:
+            headers = forget(request)
+    else:
+        headers = forget(request)
+    return HTTPFound(location=request.route_url('home'), headers=headers)
+
 @view_config(route_name='update_rating', renderer='../templates/update_rating.jinja2', permission='create')
 def update_rating(request):
     professor_id = request.matchdict['p']
@@ -56,33 +71,21 @@ def update_rating(request):
                 request.dbsession.add(rating)
             else:
                 rating.point = point
-
             n += 1
-        return HTTPFound(location=request.route_url('home'))
+        return HTTPFound(location=request.route_url('professor_course', p=professor_id, c=course_id))
 
-    return {'form': form, 'students' : students, 'professor_id' : professor_id, 'course_id' : course_id, 'work' : work }
+    return { 'form': form, 'students' : students, 'professor_id' : professor_id, 'course_id' : course_id, 'work' : work }
 
-@view_config(route_name='addwork', renderer='../templates/addwork.jinja2', permission='create')
+@view_config(route_name='add_work', renderer='../templates/addwork.jinja2', permission='create')
 def add_work(request):
-    form = AddWorkForm(request.POST)
-    if request.method == 'POST' and form.validate():
-        new_work = Work(name=form.title.data.encode('utf8'))
-        new_work.set_maxpoint(form.max_point.data)
-        request.dbsession.add(new_work)
-        return HTTPFound(location=request.route_url('home'))
-    return {'form': form}
+    professor_id = request.matchdict['p']
+    course_id = request.matchdict['c']
 
-@view_config(route_name='auth', match_param='action=in', renderer='string',
-             request_method='POST')
-@view_config(route_name='auth', match_param='action=out', renderer='string')
-def sign_in_out(request):
-    username = request.POST.get('username')
-    if username:
-        user = UserService.by_name(username, request=request)
-        if user and user.verify_password(request.POST.get('password')):
-            headers = remember(request, user.name)
-        else:
-            headers = forget(request)
-    else:
-        headers = forget(request)
-    return HTTPFound(location=request.route_url('home'), headers=headers)
+    form = AddWorkForm(request.POST)
+
+    if request.method == 'POST' and form.validate():
+        work = Work(course_id=course_id, name=form.title.data, max_point=form.max_point.data)
+        request.dbsession.add(work)
+        return HTTPFound(location=request.route_url('professor_course', p=professor_id, c=course_id))
+
+    return { 'form': form, 'professor_id' : professor_id, 'course_id' : course_id }

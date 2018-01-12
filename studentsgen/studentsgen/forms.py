@@ -10,7 +10,6 @@ class RegistrationForm(Form):
     password = PasswordField('Password', [validators.Length(min=5)])
 
 class AddWorkForm(Form):
-    course = IntegerField('Course')
     title = StringField('Work name', [validators.Length(min=1, max=255)],
                         filters=[strip_filter])
     max_point = IntegerField('Max Point')

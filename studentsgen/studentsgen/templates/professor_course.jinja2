@@ -5,6 +5,8 @@
   <h1><span class="font-semi-bold"> {{subject.name}} </span></h1>
   <h2><span class="font-semi-bold"> {{group.name}} </span></h2>
 
+  <a href="{{request.route_url('add_work', p=professor.id, c=course.id)}}"> Add Work </a>
+
   {% for work in works %}
     <li>
       <a href="{{request.route_url('update_rating', p=professor.id, c=course.id, w=work.id)}}"> {{work.name}} </a>
