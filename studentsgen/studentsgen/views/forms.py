@@ -3,10 +3,16 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 import sqlalchemy as sa
 from sqlalchemy.exc import DBAPIError
-from ..forms import RegistrationForm, AddWorkForm, UpdateGroupRatingForm, UpdateStudentRatingForm
 from wtforms import IntegerField
 from pyramid.security import remember, forget
 from ..models import Student, Professor, Subject, Group, Course, Work, Rating, User
+from ..forms import (
+    RegistrationForm,
+    AddWorkForm,
+    UpdateGroupRatingForm,
+    UpdateStudentRatingForm,
+    AddNamedForm
+)
 
 @view_config(route_name='register', renderer='../templates/register.jinja2')
 def register(request):
@@ -89,3 +95,30 @@ def add_work(request):
         return HTTPFound(location=request.route_url('professor_course', p=professor_id, c=course_id))
 
     return { 'form': form, 'professor_id' : professor_id, 'course_id' : course_id }
+
+@view_config(route_name='add_professor', renderer='../templates/add_professor.jinja2', permission='create')
+def add_professor(request):
+    form = AddNamedForm(request.POST)
+    if request.method == 'POST' and form.validate():
+        professor = Professor(name=form.name.data)
+        request.dbsession.add(professor)
+        return HTTPFound(location=request.route_url('admin'))
+    return { 'form' : form }
+
+@view_config(route_name='add_group', renderer='../templates/add_group.jinja2', permission='create')
+def add_professor(request):
+    form = AddNamedForm(request.POST)
+    if request.method == 'POST' and form.validate():
+        group = Group(name=form.name.data)
+        request.dbsession.add(group)
+        return HTTPFound(location=request.route_url('admin'))
+    return { 'form' : form }
+
+@view_config(route_name='add_subject', renderer='../templates/add_subject.jinja2', permission='create')
+def add_subject(request):
+    form = AddNamedForm(request.POST)
+    if request.method == 'POST' and form.validate():
+        subject = Subject(name=form.name.data)
+        request.dbsession.add(subject)
+        return HTTPFound(location=request.route_url('admin'))
+    return { 'form' : form }

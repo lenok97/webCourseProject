@@ -12,3 +12,8 @@ def includeme(config):
     config.add_route('professor_course', '/professor/{p}/{c}')
     config.add_route('add_work', '/professor/{p}/{c}/add')
     config.add_route('update_rating', '/professor/{p}/{c}/{w}')
+    config.add_route('add_professor', '/add_professor')
+    config.add_route('add_group', '/add_group')
+    config.add_route('add_subject', '/add_subject')
+    config.add_route('add_student', '/add_student')
+    config.add_route('add_course', '/add_course')

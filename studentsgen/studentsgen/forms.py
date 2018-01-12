@@ -19,3 +19,6 @@ class UpdateStudentRatingForm(Form):
 
 class UpdateGroupRatingForm(Form):
     students = FieldList(FormField(UpdateStudentRatingForm))
+
+class AddNamedForm(Form):
+    name = StringField('Name', [validators.Length(min=1, max=255)], filters=[strip_filter])

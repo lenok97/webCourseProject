@@ -1,7 +1,7 @@
 {% extends "layout.jinja2" %}
 
 {% block content %}
-    <h1>Add work</h1>
+    <h1>Add Work</h1>
 
     <form action="{{request.route_url('add_work', p=professor_id, c=course_id)}}" method="post" class="form">
 
@@ -27,5 +27,5 @@
             <button type="submit" class="btn btn-default">Submit</button>
         </div>
     </form>
-    <p><a href="{{request.route_url('home')}}">Go Back</a></p>
+    <p><a href="{{request.route_url('professor_course', p=professor_id, c=course_id)}}">Go Back</a></p>
 {% endblock content %}

@@ -1,0 +1,22 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+    <h1>Add Subject</h1>
+
+    <form action="{{request.route_url('add_subject')}}" method="post" class="form">
+
+        {% for error in form.name.errors %}
+            <div class="error">{{error}}</div>
+        {% endfor %}
+
+        <div class="form-group">
+            <label for="body">{{form.name.label}}</label>
+            {{form.name(class_='form-control')}}
+        </div>
+		
+        <div class="form-group">
+            <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+    </form>
+    <p><a href="{{request.route_url('admin')}}">Go Back</a></p>
+{% endblock content %}
