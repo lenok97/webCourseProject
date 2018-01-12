@@ -3,7 +3,7 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 import sqlalchemy as sa
 from sqlalchemy.exc import DBAPIError
-from ..forms import RegistrationForm, AddWorkForm, UpdateRatingForm
+from ..forms import RegistrationForm, AddWorkForm, UpdateStudentRatingForm
 from pyramid.security import remember, forget
 from ..models import Student, Professor, Subject, Group, Course, Work, Rating, User
 

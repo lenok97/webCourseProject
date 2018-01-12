@@ -3,7 +3,8 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 import sqlalchemy as sa
 from sqlalchemy.exc import DBAPIError
-from ..forms import RegistrationForm, AddWorkForm, UpdateRatingForm
+from ..forms import RegistrationForm, AddWorkForm, UpdateGroupRatingForm, UpdateStudentRatingForm
+from wtforms import IntegerField
 from pyramid.security import remember, forget
 from ..models import Student, Professor, Subject, Group, Course, Work, Rating, User
 
@@ -23,14 +24,43 @@ def update_rating(request):
     course_id = request.matchdict['c']
     work_id = request.matchdict['w']
 
-    form = UpdateRatingForm(request.POST)
+    query = request.dbsession.query(Work)
+    work = query.get(work_id)
+
+    query = request.dbsession.query(Course)
+    course = query.get(work.course_id)
+
+    query = request.dbsession.query(Student)
+    students = query.filter(Student.group_id == course.group_id).order_by(sa.desc(Student.name))
+
+    form = UpdateGroupRatingForm(request.POST)
+
+    n = 0
+    for student in students:
+        form.students.append_entry()
+        form.students[n].point.label = student.name
+        form.students[n].point.data = 0
+        n += 1
+
     if request.method == 'POST' and form.validate():
-        reiting = Rating(work_id=form.work.data)
-        reiting.set_student(form.student_id.data)
-        reiting.set_point(form.point.data) 
-        request.dbsession.add(reiting)
+        query = request.dbsession.query(Rating)
+
+        n = 0
+        for student in students:
+            point = request.params[form.students[n].point.id]
+
+            rating = query.filter(Rating.work_id == work.id, Rating.student_id == student.id).one_or_none()
+
+            if rating == None:
+                rating = Rating(work_id=work.id, student_id=student.id, point=point)
+                request.dbsession.add(rating)
+            else:
+                rating.point = point
+
+            n += 1
         return HTTPFound(location=request.route_url('home'))
-    return {'form': form, 'professor' : professor_id, 'course' : course_id, 'work' : work_id }
+
+    return {'form': form, 'students' : students, 'professor_id' : professor_id, 'course_id' : course_id, 'work' : work }
 
 @view_config(route_name='addwork', renderer='../templates/addwork.jinja2', permission='create')
 def add_work(request):

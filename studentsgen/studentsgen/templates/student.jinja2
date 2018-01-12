@@ -5,9 +5,9 @@
   <h1><span class="font-semi-bold"> {{student.name}} </span></h1>
   <h2><span class="font-semi-bold"> {{group.name}} </span></h2>
 
-  {% for course in courses %}
+  {% for course, subject in data %}
   	<li>
-  	  <a href="{{request.route_url('student_course', s=student.id, c=course.id)}}"> {{course.name}} </a>
+  	  <a href="{{request.route_url('student_course', s=student.id, c=course.id)}}"> {{subject.name}} </a>
   	</li>
   {% endfor %}
 </div>

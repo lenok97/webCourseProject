@@ -3,7 +3,7 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 import sqlalchemy as sa
 from sqlalchemy.exc import DBAPIError
-from ..forms import RegistrationForm, AddWorkForm, UpdateRatingForm
+from ..forms import RegistrationForm, AddWorkForm, UpdateStudentRatingForm
 from pyramid.security import remember, forget
 from ..models import Student, Professor, Subject, Group, Course, Work, Rating, User
 
@@ -24,17 +24,19 @@ def professor_view(request):
     group_query = request.dbsession.query(Group)
 
     courses = []
+    subjects = []
     groups = []
     for course in query.filter(Course.professor_id == professor.id):
-        courses.append(sub_query.get(course.subject_id))
+        courses.append(course)
+        subjects.append(sub_query.get(course.subject_id))
         groups.append(group_query.get(course.group_id))
 
-    data = zip(courses, groups)
+    data = zip(courses, subjects, groups)
 
     return { 'professor' : professor, 'data' : data }
 
 @view_config(route_name='professor_course', renderer='../templates/professor_course.jinja2')
-def student_course_view(request):
+def professor_course_view(request):
     professor_id = request.matchdict['p']
     course_id = request.matchdict['c']
 
@@ -54,7 +56,7 @@ def student_course_view(request):
     work_query = request.dbsession.query(Work)
 
     works = []
-    for work in query.filter(Work.course_id == course.id ):
+    for work in query.filter(Work.course_id == course.id):
         works.append(work)
 
     return { 'professor' : professor, 'course' : course, 'subject' : subject, 'group' : group, 'works' : works }

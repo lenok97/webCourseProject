@@ -1,4 +1,4 @@
-from wtforms import Form, StringField, TextAreaField, validators
+from wtforms import Form, StringField, TextAreaField, FieldList, FormField, validators
 from wtforms import IntegerField, PasswordField
 from wtforms.widgets import HiddenInput
 
@@ -15,8 +15,8 @@ class AddWorkForm(Form):
                         filters=[strip_filter])
     max_point = IntegerField('Max Point')
 
-class UpdateRatingForm(Form):
-    student_id = IntegerField('Student')
-    work=IntegerField('Work')
+class UpdateStudentRatingForm(Form):
     point=IntegerField('Point')
 
+class UpdateGroupRatingForm(Form):
+    students = FieldList(FormField(UpdateStudentRatingForm))
