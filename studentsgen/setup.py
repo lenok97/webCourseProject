@@ -20,7 +20,8 @@ requires = [
     'zope.sqlalchemy',
     'waitress',
     'passlib',
-    'wtforms==2.1'
+    'wtforms==2.1',
+    'bcrypt'
 ]
 
 tests_require = [

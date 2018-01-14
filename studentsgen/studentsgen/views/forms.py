@@ -1,6 +1,6 @@
 from pyramid.response import Response
 from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import HTTPFound, HTTPForbidden
 import sqlalchemy as sa
 from sqlalchemy.exc import DBAPIError
 from wtforms import IntegerField
@@ -21,28 +21,19 @@ def register(request):
     form = RegistrationForm(request.POST)
     if request.method == 'POST' and form.validate():
         new_user = User(name=form.username.data)
-        new_user.set_password(form.password.data.encode('utf8'))
+        new_user.set_password(form.password.data)
+        new_user.set_role('base') #при регистрации доступ только для просмотра
         request.dbsession.add(new_user)
         return HTTPFound(location=request.route_url('home'))
     return {'form': form}
 
-@view_config(route_name='auth', match_param='action=in', renderer='string',
-             request_method='POST')
-@view_config(route_name='auth', match_param='action=out', renderer='string')
-def sign_in_out(request):
-    username = request.POST.get('username')
-    if username:
-        user = UserService.by_name(username, request=request)
-        if user and user.verify_password(request.POST.get('password')):
-            headers = remember(request, user.name)
-        else:
-            headers = forget(request)
-    else:
-        headers = forget(request)
-    return HTTPFound(location=request.route_url('home'), headers=headers)
 
-@view_config(route_name='update_rating', renderer='../templates/update_rating.jinja2', permission='create')
+@view_config(route_name='update_rating', renderer='../templates/update_rating.jinja2')
 def update_rating(request):
+    user = request.user
+    if user is None or (user.role != 'editor'):
+        raise HTTPForbidden
+    
     professor_id = request.matchdict['p']
     course_id = request.matchdict['c']
     work_id = request.matchdict['w']
@@ -86,11 +77,15 @@ def update_rating(request):
 
 @view_config(route_name='add_work', renderer='../templates/addwork.jinja2', permission='create')
 def add_work(request):
+    user = request.user
+    if user is None or (user.role != 'editor'):
+        raise HTTPForbidden
+    
     professor_id = request.matchdict['p']
     course_id = request.matchdict['c']
-
+    
     form = AddWorkForm(request.POST)
-
+    
     if request.method == 'POST' and form.validate():
         work = Work(course_id=course_id, name=form.title.data, max_point=form.max_point.data)
         request.dbsession.add(work)

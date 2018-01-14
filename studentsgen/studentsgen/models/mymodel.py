@@ -13,6 +13,8 @@ from sqlalchemy.schema import Table
 from .meta import Base
 from passlib.apps import custom_app_context as pwd_context
 
+import bcrypt
+
 
 class Student(Base):
     __tablename__ = 'student'
@@ -80,20 +82,23 @@ class Rating(Base):
     def set_student(self, id):
         self.student_id = id
 
+
 class User(Base):
-    __tablename__ = 'user'
+    __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
-    name = Column(Unicode(255), unique=True, nullable=False)
-    password = Column(Unicode(255), nullable=False)
-    last_logged = Column(DateTime, default=datetime.datetime.utcnow)
+    name = Column(Text, nullable=False, unique=True)
+    role = Column(Text, nullable=False)
+    password_hash = Column(Text)
 
-    def verify_password(self, password):
-        # is it cleartext?
-        if password == self.password:
-            self.set_password(password)
+    def set_password(self, pw):
+        pwhash = bcrypt.hashpw(pw.encode('utf8'), bcrypt.gensalt())
+        self.password_hash = pwhash.decode('utf8')
 
-        return "<User(%r, %r)>" %(password, self.password)
+    def set_role(self, role):
+        self.role = role
 
-    def set_password(self, password):
-        password_hash = pwd_context.encrypt(password)
-        self.password = password_hash
+    def check_password(self, pw):
+        if self.password_hash is not None:
+            expected_hash = self.password_hash.encode('utf8')
+            return bcrypt.checkpw(pw.encode('utf8'), expected_hash)
+        return False

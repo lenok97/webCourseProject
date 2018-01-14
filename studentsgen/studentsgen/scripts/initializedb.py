@@ -15,7 +15,7 @@ from ..models import (
     get_session_factory,
     get_tm_session,
     )
-from ..models import Student, Professor, Subject, Group, Course, Work, Rating
+from ..models import Student, Professor, Subject, Group, Course, Work, Rating, User
 
 
 def usage(argv):
@@ -120,3 +120,13 @@ def main(argv=sys.argv):
         rating.append(Rating(student_id=student[4].id, work_id=work[6].id, point=25))
         for r in rating:
             dbsession.add(r)
+        dbsession.flush()
+        user=[]
+        user.append(User(name='student', role='base'))
+        user[0].set_password("123456")
+        user.append(User(name='professor', role='editor'))
+        user[1].set_password("123456")
+
+        for u in user:
+            dbsession.add(u)
+
