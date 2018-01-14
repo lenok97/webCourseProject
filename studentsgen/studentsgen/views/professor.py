@@ -14,48 +14,15 @@ def professors_view(request):
 @view_config(route_name='professor', renderer='../templates/professor.jinja2')
 def professor_view(request):
     professor_id = request.matchdict['p']
-
     query = request.dbsession.query(Professor)
     professor = query.get(professor_id)
 
-    query = request.dbsession.query(Course)
-    sub_query = request.dbsession.query(Subject)
-    group_query = request.dbsession.query(Group)
-
-    courses = []
-    subjects = []
-    groups = []
-    for course in query.filter(Course.professor_id == professor.id):
-        courses.append(course)
-        subjects.append(sub_query.get(course.subject_id))
-        groups.append(group_query.get(course.group_id))
-
-    data = zip(courses, subjects, groups)
-
-    return { 'professor' : professor, 'data' : data }
+    return { 'professor' : professor }
 
 @view_config(route_name='professor_course', renderer='../templates/professor_course.jinja2')
 def professor_course_view(request):
-    professor_id = request.matchdict['p']
     course_id = request.matchdict['c']
-
-    query = request.dbsession.query(Professor)
-    professor = query.get(professor_id)
-
     query = request.dbsession.query(Course)
     course = query.get(course_id)
 
-    query = request.dbsession.query(Subject)
-    subject = query.get(course.subject_id)
-
-    query = request.dbsession.query(Group)
-    group = query.get(course.group_id)
-
-    query = request.dbsession.query(Work)
-    work_query = request.dbsession.query(Work)
-
-    works = []
-    for work in query.filter(Work.course_id == course.id):
-        works.append(work)
-
-    return { 'professor' : professor, 'course' : course, 'subject' : subject, 'group' : group, 'works' : works }
+    return { 'course' : course }

@@ -2,14 +2,14 @@
 
 {% block content %}
 <div class="content">
-  <h1><span class="font-semi-bold"> {{subject.name}} </span></h1>
-  <h2><span class="font-semi-bold"> {{group.name}} </span></h2>
+  <h1><span class="font-semi-bold"> {{course.subject.name}} </span></h1>
+  <h2><span class="font-semi-bold"> {{course.group.name}} </span></h2>
 
-  <a href="{{request.route_url('add_work', p=professor.id, c=course.id)}}"> Add Work </a>
+  <a href="{{request.route_url('add_work', p=course.professor.id, c=course.id)}}"> Add Work </a>
 
-  {% for work in works %}
+  {% for work in course.works %}
     <li>
-      <a href="{{request.route_url('update_rating', p=professor.id, c=course.id, w=work.id)}}"> {{work.name}} </a>
+      <a href="{{request.route_url('update_rating', p=course.professor.id, c=course.id, w=work.id)}}"> {{work.name}} </a>
     </li>
   {% endfor %}
 </div>

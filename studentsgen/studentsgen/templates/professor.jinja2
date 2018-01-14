@@ -4,13 +4,13 @@
 <div class="content">
   <h1><span class="font-semi-bold"> {{professor.name}} </span></h1>
 
-  {% for course, subject, group in data %}
+  {% for course in professor.courses %}
   	<div class="row">
   	  <div class="col col-lg-6 col-md-6 col-sm-6 col-6">
-  		<a href="{{request.route_url('professor_course', p=professor.id, c=course.id)}}"> {{subject.name}} </a>
+  		<a href="{{request.route_url('professor_course', p=professor.id, c=course.id)}}"> {{course.subject.name}} </a>
   	  </div>
   	  <div class="col col-lg-6 col-md-6 col-sm-6 col-6">
-  	    <h2><span class="font-semi-bold"> {{group.name}} </span></h2>
+  	    <h2><span class="font-semi-bold"> {{course.group.name}} </span></h2>
   	  </div>
     </div>
   {% endfor %}

@@ -14,55 +14,28 @@ def students_view(request):
 @view_config(route_name='student', renderer='../templates/student.jinja2')
 def student_view(request):
     student_id = request.matchdict['s']
-    
     query = request.dbsession.query(Student)
     student = query.get(student_id)
 
-    query = request.dbsession.query(Group)
-    group = query.get(student.group_id)
-
-    query = request.dbsession.query(Course)
-    sub_query = request.dbsession.query(Subject)
-
-    courses = []
-    subjects = []
-    for course in query.filter(Course.group_id == group.id):
-        courses.append(course)
-        subjects.append(sub_query.get(course.subject_id))
-
-    data = zip(courses, subjects)
-
-    return { 'student' : student, 'group' : group, 'data' : data }
+    return { 'student' : student }
 
 @view_config(route_name='student_course', renderer='../templates/student_course.jinja2')
 def student_course_view(request):
     student_id = request.matchdict['s']
     course_id = request.matchdict['c']
-
-    query = request.dbsession.query(Student)
-    student = query.get(student_id)
-
     query = request.dbsession.query(Course)
     course = query.get(course_id)
 
-    query = request.dbsession.query(Subject)
-    subject = query.get(course.subject_id)
-
-    query = request.dbsession.query(Professor)
-    professor = query.get(course.professor_id)
-
-    query = request.dbsession.query(Rating)
-    work_query = request.dbsession.query(Work)
-
     ratings = []
     works = []
-    for rating in query.filter(Rating.student_id == student.id ):
-        work = work_query.get(rating.work_id)
-
-        if work.course_id == course.id:
-            ratings.append(rating)
-            works.append(work_query.get(rating.work_id))
+    for rating, work in request.dbsession.query(Rating, Work).\
+                                filter(Rating.student_id == student_id).\
+                                filter(Rating.work_id == Work.id).\
+                                filter(Work.course_id == course.id).\
+                                all():
+        ratings.append(rating)
+        works.append(work)
 
     data = zip(ratings, works)
 
-    return { 'subject' : subject, 'professor' : professor, 'data' : data }
+    return { 'course' : course, 'data' : data }

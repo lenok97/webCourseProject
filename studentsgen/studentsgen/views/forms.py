@@ -2,8 +2,6 @@ from pyramid.response import Response
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 import sqlalchemy as sa
-from sqlalchemy.exc import DBAPIError
-from wtforms import IntegerField
 from pyramid.security import remember, forget
 from ..models import Student, Professor, Subject, Group, Course, Work, Rating, User
 from ..forms import (
@@ -49,12 +47,8 @@ def update_rating(request):
 
     query = request.dbsession.query(Work)
     work = query.get(work_id)
-
-    query = request.dbsession.query(Course)
-    course = query.get(work.course_id)
-
-    query = request.dbsession.query(Student)
-    students = query.filter(Student.group_id == course.group_id).order_by(sa.desc(Student.name))
+    course = work.course
+    students = course.group.students
 
     form = UpdateGroupRatingForm(request.POST)
 
@@ -71,6 +65,11 @@ def update_rating(request):
         n = 0
         for student in students:
             point = request.params[form.students[n].point.id]
+
+            if point > work.max_point:
+                point = work.max_point
+            elif point < 0:
+                point = 0
 
             rating = query.filter(Rating.work_id == work.id, Rating.student_id == student.id).one_or_none()
 
